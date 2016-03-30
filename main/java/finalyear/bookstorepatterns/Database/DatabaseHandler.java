@@ -11,7 +11,9 @@ import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import finalyear.bookstorepatterns.Model.Address;
 import finalyear.bookstorepatterns.Model.Book;
@@ -384,8 +386,145 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     }
 
 
+    /**
+     * Get the count of each table
+     */
+
+    public int getUsersCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public int getAddressCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_ADDRESS, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public int getReviewsCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_REVIEW, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public int getPaymentMethodCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PAYMENT_METHOD, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public int getPurchaseHistoryCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PURCHASE_HISTORY, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public int getBooksCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_BOOKS, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
 
 
+    /**
+     * RETURN COMPLETE TABLES TO LIST
+     */
 
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS, null);
+        if(cursor.moveToFirst()) {
+            do {
+                users.add(new User(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
 
+            } while (cursor.moveToNext()) ;
+        }
+        return users;
+    }
+
+    public List<Address> getAllAddresses() {
+        List<Address> addresses = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_ADDRESS, null);
+        if(cursor.moveToFirst()) {
+            do {
+                addresses.add(new Address(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5)));
+
+            } while (cursor.moveToNext()) ;
+        }
+        return addresses;
+    }
+
+    public List<Review> getAllReviews() {
+        List<Review> reviews = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_REVIEW, null);
+        if(cursor.moveToFirst()) {
+            do {
+                reviews.add(new Review(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), Double.parseDouble(cursor.getString(3)), cursor.getString(4)));
+
+            } while (cursor.moveToNext()) ;
+        }
+        return reviews;
+    }
+
+    public List<PaymentMethod> getAllPaymentMethods() {
+        List<PaymentMethod> paymentMethods = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PAYMENT_METHOD, null);
+        if(cursor.moveToFirst()) {
+            do {
+                paymentMethods.add(new PaymentMethod(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5)));
+
+            } while (cursor.moveToNext()) ;
+        }
+        return paymentMethods;
+    }
+
+    public List<PurchaseHistory> getAllPurchasHistory() {
+        List<PurchaseHistory> purchaseHistories = new ArrayList<>();
+        Date date = new Date();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PURCHASE_HISTORY, null);
+        if(cursor.moveToFirst()) {
+            do {
+                DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    date = iso8601Format.parse(cursor.getString(3));
+                } catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+                purchaseHistories.add(new PurchaseHistory(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), date));
+
+            } while (cursor.moveToNext()) ;
+        }
+        return purchaseHistories;
+    }
+
+    public List<Book> getAllBooks() {
+        List<Book> books = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_BOOKS, null);
+        if(cursor.moveToFirst()) {
+            do {
+                books.add(new Book(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), Integer.parseInt(cursor.getString(5)), Uri.parse(cursor.getString(6))));
+
+            } while (cursor.moveToNext()) ;
+        }
+        return books;
+    }
 }
