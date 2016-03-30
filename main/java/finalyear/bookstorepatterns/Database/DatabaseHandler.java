@@ -2,8 +2,16 @@ package finalyear.bookstorepatterns.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.ParseException;
+import android.net.Uri;
+import android.util.Log;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import finalyear.bookstorepatterns.Model.Address;
 import finalyear.bookstorepatterns.Model.Book;
@@ -163,6 +171,221 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.insert(TABLE_BOOKS, null, values);
         db.close();
     }
+
+
+    /**
+     * DELETE OBJECTS AND REMOVE FROM DATABASE
+     */
+
+    //Delete a User and any associated objects.
+    public void deleteUser(User user) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_USERS, KEY_USER_ID + "=?", new String[]{String.valueOf(user.get_userId())});
+        db.delete(TABLE_ADDRESS, KEY_ADDRESS_USER_ID + "=?", new String[]{String.valueOf(user.get_userId())});
+        db.delete(TABLE_REVIEW, KEY_REVIEW_USER_ID + "=?", new String[]{String.valueOf(user.get_userId())});
+        db.delete(TABLE_PAYMENT_METHOD, KEY_PAYMENT_METHOD_USER_ID + "=?", new String[]{String.valueOf(user.get_userId())});
+        db.delete(TABLE_PURCHASE_HISTORY, KEY_PURCHASE_HISTORY_USER_ID + "=?", new String[]{String.valueOf(user.get_userId())});
+        db.close();
+    }
+
+    public void deleteAddress(Address address) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_ADDRESS, KEY_ADDRESS_ID + "=?", new String[]{String.valueOf(address.get_addressId())});
+        db.close();
+    }
+
+    public void deleteReview(Review review) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_REVIEW, KEY_REVIEW_ID + "=?", new String[]{String.valueOf(review.get_reviewId())});
+        db.close();
+    }
+
+    public void deletePaymentMethod(PaymentMethod paymentMethod) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_PAYMENT_METHOD, KEY_PAYMENT_METHOD_ID + "=?", new String[]{String.valueOf(paymentMethod.get_paymentMethodId())});
+        db.close();
+    }
+
+    public void deletePurchaseHistory(PurchaseHistory purchaseHistory) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_PURCHASE_HISTORY, KEY_PURCHASE_HISTORY_ID + "=?", new String[]{String.valueOf(purchaseHistory.get_purchaseHistoryId())});
+        db.close();
+    }
+
+    //Delete Book and associated reviews.
+    public void deleteBook(Book book) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_BOOKS, KEY_BOOK_ID + "=?", new String[]{String.valueOf(book.get_bookId())});
+        db.delete(TABLE_REVIEW, KEY_REVIEW_BOOK_ID  + "=?", new String[]{String.valueOf(book.get_bookId())});
+        db.close();
+    }
+
+
+    /**
+     * UPDATE OBJECTS AND UPDATE IN DATABASE
+     */
+
+    public int updateUser(User user) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_USER_NAME, user.get_name());
+        values.put(KEY_USER_EMAIL, user.get_email());
+        values.put(KEY_USER_PASSWORD, user.get_password());
+        int rowsAffected = db.update(TABLE_USERS, values, KEY_USER_ID + "=?", new String[]{String.valueOf(user.get_userId())});
+        db.close();
+        return rowsAffected;
+    }
+
+    public int updateAddress(Address address) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ADDRESS_USER_ID, address.get_userId());
+        values.put(KEY_ADDRESS_STREET1, address.get_street1());
+        values.put(KEY_ADDRESS_STREET2, address.get_street2());
+        values.put(KEY_ADDRESS_CITY, address.get_city());
+        values.put(KEY_ADDRESS_COUNTRY, address.get_country());
+        int rowsAffected = db.update(TABLE_ADDRESS, values, KEY_ADDRESS_ID + "=?", new String[]{String.valueOf(address.get_addressId())});
+        db.close();
+        return rowsAffected;
+    }
+
+    public int updateReview(Review review) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_REVIEW_BOOK_ID, review.get_bookId());
+        values.put(KEY_REVIEW_USER_ID, review.get_userId());
+        values.put(KEY_REVIEW_COMMENT, review.get_comment());
+        values.put(KEY_REVIEW_RATING, review.get_rating());
+        int rowsAffected = db.update(TABLE_REVIEW, values, KEY_REVIEW_ID + "=?", new String[]{String.valueOf(review.get_reviewId())});
+        db.close();
+        return rowsAffected;
+    }
+
+    public int updatePaymentMethod(PaymentMethod paymentMethod) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_PAYMENT_METHOD_USER_ID, paymentMethod.get_userId());
+        values.put(KEY_PAYMENT_METHOD_CARD_HOLDER_NAME, paymentMethod.get_cardHolderName());
+        values.put(KEY_PAYMENT_METHOD_CARD_NUMBER, paymentMethod.get_cardNumber());
+        values.put(KEY_PAYMENT_METHOD_CARD_EXPIRY, paymentMethod.get_cardExpiry());
+        values.put(KEY_PAYMENT_METHOD_CARD_CVV, paymentMethod.get_cardCVV());
+        int rowsAffected = db.update(TABLE_PAYMENT_METHOD, values, KEY_PAYMENT_METHOD_ID + "=?", new String[]{String.valueOf(paymentMethod.get_paymentMethodId())});
+        db.close();
+        return rowsAffected;
+    }
+
+    public int updatePurchaseHistory(PurchaseHistory purchaseHistory){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_PURCHASE_HISTORY_USER_ID, purchaseHistory.get_userId());
+        values.put(KEY_PURCHASE_HISTORY_BOOK_ID, purchaseHistory.get_bookId());
+        values.put(KEY_PURCHASE_HISTORY_DATE, String.valueOf(purchaseHistory.get_date()));
+        int rowsAffected = db.update(TABLE_PURCHASE_HISTORY, values, KEY_PURCHASE_HISTORY_ID + "=?", new String[]{String.valueOf(purchaseHistory.get_purchaseHistoryId())});
+        db.close();
+        return rowsAffected;
+    }
+
+    public int updateBook(Book book) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_BOOK_TITLE, book.get_title());
+        values.put(KEY_BOOK_AUTHOR, book.get_author());
+        values.put(KEY_BOOK_PRICE, book.get_price());
+        values.put(KEY_BOOK_CATEGORY, book.get_category());
+        values.put(KEY_BOOK_QUANTITY, book.get_quantity());
+        values.put(KEY_BOOK_IMAGE, book.get_bookImage().toString());
+        int rowsAffected = db.update(TABLE_BOOKS, values, KEY_BOOK_ID + "=?", new String[]{String.valueOf(book.get_bookId())});
+        db.close();
+        return rowsAffected;
+
+    }
+
+    /**
+     * READ INDIVIDUAL OBJECTS FROM DATABASE
+     */
+
+    public User getUser(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, new String[] {KEY_USER_ID,KEY_USER_NAME, KEY_USER_EMAIL, KEY_USER_PASSWORD},
+                KEY_USER_ID + "=?", new String[]{String.valueOf(id)},null,null,null,null);
+        if(cursor !=null)
+            cursor.moveToFirst();
+        User user = new User(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+        db.close();
+        cursor.close();
+        return user;
+    }
+
+    public Address getAddress(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ADDRESS, new String[] {KEY_ADDRESS_ID,KEY_ADDRESS_USER_ID, KEY_ADDRESS_STREET1, KEY_ADDRESS_STREET2, KEY_ADDRESS_CITY, KEY_ADDRESS_COUNTRY},
+                KEY_ADDRESS_ID + "=?", new String[]{String.valueOf(id)},null,null,null,null);
+        if(cursor !=null)
+            cursor.moveToFirst();
+        Address address = new Address(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+        db.close();
+        cursor.close();
+        return address;
+    }
+
+    public Review getReview(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_REVIEW, new String[] {KEY_REVIEW_ID,KEY_REVIEW_BOOK_ID, KEY_REVIEW_USER_ID, KEY_REVIEW_COMMENT, KEY_REVIEW_RATING},
+                KEY_REVIEW_ID + "=?", new String[]{String.valueOf(id)},null,null,null,null);
+        if(cursor !=null)
+            cursor.moveToFirst();
+        Review review = new Review(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), Double.parseDouble(cursor.getString(3)), cursor.getString(4));
+        db.close();
+        cursor.close();
+        return review;
+    }
+
+    public PaymentMethod getPaymentMethod(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_PAYMENT_METHOD, new String[] {KEY_PAYMENT_METHOD_ID,KEY_PAYMENT_METHOD_USER_ID, KEY_PAYMENT_METHOD_CARD_HOLDER_NAME, KEY_PAYMENT_METHOD_CARD_NUMBER, KEY_PAYMENT_METHOD_CARD_EXPIRY, KEY_PAYMENT_METHOD_CARD_CVV},
+                KEY_PAYMENT_METHOD_ID + "=?", new String[]{String.valueOf(id)},null,null,null,null);
+        if(cursor !=null)
+            cursor.moveToFirst();
+        PaymentMethod paymentMethod = new PaymentMethod(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+        db.close();
+        cursor.close();
+        return paymentMethod;
+    }
+
+    public PurchaseHistory getPurchaseHistory(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Date date = null;
+        Cursor cursor = db.query(TABLE_PURCHASE_HISTORY, new String[] {KEY_PURCHASE_HISTORY_ID, KEY_PURCHASE_HISTORY_USER_ID, KEY_PURCHASE_HISTORY_BOOK_ID, KEY_PURCHASE_HISTORY_DATE},
+                KEY_PURCHASE_HISTORY_ID + "=?", new String[]{String.valueOf(id)},null,null,null,null);
+        if(cursor !=null)
+            cursor.moveToFirst();
+        DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            date = iso8601Format.parse(cursor.getString(3));
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        PurchaseHistory purchaseHistory = new PurchaseHistory(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), date);
+        db.close();
+        cursor.close();
+        return purchaseHistory;
+    }
+
+    public Book getBook(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_BOOKS, new String[] {KEY_BOOK_ID,KEY_BOOK_TITLE, KEY_BOOK_AUTHOR, KEY_BOOK_PRICE, KEY_BOOK_CATEGORY, KEY_BOOK_QUANTITY, KEY_BOOK_IMAGE},
+                KEY_BOOK_ID + "=?", new String[]{String.valueOf(id)},null,null,null,null);
+        if(cursor !=null)
+            cursor.moveToFirst();
+        Book book = new Book(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), Integer.parseInt(cursor.getString(5)), Uri.parse(cursor.getString(6)));
+        db.close();
+        cursor.close();
+        return book;
+    }
+
+
+
+
 
 
 }

@@ -11,14 +11,14 @@ public class Book {
     private int _quantity, _bookId;
     private Uri _bookImage;
 
-    public Book(int _bookId, String _title, String _author, String _price, String _category, int _quantity, Uri _bookImage) {
-        this._bookId = _bookId;
-        this._title = _title;
-        this._author = _author;
-        this._price = _price;
-        this._category = _category;
-        this._quantity = _quantity;
-        this._bookImage = _bookImage;
+    public Book(int bookId, String title, String author, String price, String category, int quantity, Uri bookImage) {
+        _bookId = bookId;
+        _title = title;
+        _author = author;
+        _price = price;
+        _category = category;
+        _quantity = quantity;
+        _bookImage = bookImage;
     }
 
     public Uri get_bookImage() {
