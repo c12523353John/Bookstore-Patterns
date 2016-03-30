@@ -509,7 +509,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                     e.printStackTrace();
                 }
                 purchaseHistories.add(new PurchaseHistory(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), date));
-
             } while (cursor.moveToNext()) ;
         }
         return purchaseHistories;
