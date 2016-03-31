@@ -30,19 +30,23 @@ import java.util.List;
 
 import finalyear.bookstorepatterns.Database.DatabaseHandler;
 import finalyear.bookstorepatterns.Model.Book;
+import finalyear.bookstorepatterns.Model.User;
 
 public class AdminMain extends AppCompatActivity {
 
-    private static final int EDIT=0, DELETE=1;
+    private static final int EDIT=0, DELETE=1, BOOKINDETAIL=2, USERINFO=3, USERHISTORY=4;
 
     EditText title, author, price, category, quantity;
     ImageView bookImageImgView;
     Uri bookImageUri = Uri.parse("android.resource://finalyear.bookstorepatterns/drawable/booksil.jpg");
     List<Book> books = new ArrayList<>();
+    List<User> users = new ArrayList<>();
     ListView booksListView;
+    ListView userListView;
     DatabaseHandler dbHandler;
     int longClickedItemIndex;
     ArrayAdapter<Book> bookAdapter;
+    ArrayAdapter<User> userAdapter;
     private boolean isEditMode;
     TabHost tabHost;
 
@@ -61,9 +65,11 @@ public class AdminMain extends AppCompatActivity {
         bookImageImgView = (ImageView) findViewById(R.id.imgViewBookImg);
         quantity = (EditText) findViewById(R.id.bookStockQuantity);
         booksListView = (ListView) findViewById(R.id.booksListView);
+        userListView = (ListView) findViewById(R.id.customersListView);
         dbHandler = new DatabaseHandler(getApplicationContext());
 
         registerForContextMenu(booksListView);
+        registerForContextMenu(userListView);
 
         booksListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -72,6 +78,16 @@ public class AdminMain extends AppCompatActivity {
                 return false;
             }
         });
+
+        userListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                longClickedItemIndex = position;
+                return false;
+            }
+        });
+
+
 
         final Button addBtn = (Button) findViewById(R.id.btnAddBook);
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -138,10 +154,12 @@ public class AdminMain extends AppCompatActivity {
 
         if(dbHandler.getUsersCount() !=0) {
             books.addAll(dbHandler.getAllBooks());
+            users.addAll(dbHandler.getAllUsers());
         }
 
 
         populateList();
+        populateCustomerList();
 
 
 
@@ -149,13 +167,25 @@ public class AdminMain extends AppCompatActivity {
 
     }
 
+
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo);
 
-        menu.setHeaderIcon(R.drawable.pencil_icon);
-        menu.setHeaderTitle("Car Options");
-        menu.add(Menu.NONE, EDIT, menu.NONE, "Edit Book Info");
-        menu.add(Menu.NONE, DELETE, menu.NONE, "Delete Book");
+        if(view == booksListView) {
+            menu.setHeaderIcon(R.drawable.pencil_icon);
+            menu.setHeaderTitle("Book Options");
+            menu.add(Menu.NONE, EDIT, menu.NONE, "Edit Book Info");
+            menu.add(Menu.NONE, DELETE, menu.NONE, "Delete Book");
+            menu.add(Menu.NONE, BOOKINDETAIL, menu.NONE, "View Book");
+        }
+
+        if(view == userListView) {
+            menu.setHeaderIcon(R.drawable.pencil_icon);
+            menu.setHeaderTitle("User Options");
+            menu.add(Menu.NONE, USERINFO, menu.NONE, "View User Info");
+            menu.add(Menu.NONE, USERHISTORY, menu.NONE, "View User Transaction History");
+        }
+
     }
 
     public boolean onContextItemSelected(MenuItem item) {
@@ -169,6 +199,28 @@ public class AdminMain extends AppCompatActivity {
                 books.remove(longClickedItemIndex);
                 bookAdapter.notifyDataSetChanged();
                 break;
+
+            case BOOKINDETAIL:
+                Intent intent = new Intent(AdminMain.this, DetailedBook.class);
+                Book book = books.get(longClickedItemIndex);
+                intent.putExtra("BOOK_ID", book.get_bookId());
+                startActivity(intent);
+                break;
+
+            case USERINFO:
+                Intent intent2 = new Intent(AdminMain.this, DetailedUser.class);
+                User userInfo = users.get(longClickedItemIndex);
+                intent2.putExtra("User_ID", userInfo.get_userId());
+                startActivity(intent2);
+                break;
+
+            case USERHISTORY:
+                Intent intent3 = new Intent(AdminMain.this, UserTransactionHistory.class);
+                User userHistory = users.get(longClickedItemIndex);
+                intent3.putExtra("USER_ID", userHistory.get_userId());
+                startActivity(intent3);
+                break;
+
 
         }
 
@@ -190,6 +242,13 @@ public class AdminMain extends AppCompatActivity {
         booksListView.setAdapter(bookAdapter);
     }
 
+
+    private void populateCustomerList() {
+        userAdapter = new UserListAdapter();
+        userAdapter.notifyDataSetChanged();
+        userListView.setAdapter(userAdapter);
+    }
+
     private class BookListAdapter extends ArrayAdapter<Book> {
         public BookListAdapter() {
             super(AdminMain.this, R.layout.listview_books, books);
@@ -205,13 +264,31 @@ public class AdminMain extends AppCompatActivity {
             title.setText(currentBook.get_title());
             TextView author = (TextView) view.findViewById(R.id.listBookAuthor);
             author.setText(currentBook.get_author());
-            TextView price = (TextView) view.findViewById(R.id.listBookPrice);
-            price.setText("€" + currentBook.get_price());
+            TextView quantity = (TextView) view.findViewById(R.id.listBookQuantity);
+            quantity.setText("Stock Level: " + currentBook.get_quantity());
             ImageView ivBookImage = (ImageView) view.findViewById(R.id.ivBookImage);
             ivBookImage.setImageURI(currentBook.get_bookImage());
             return view;
     }
     }
+
+
+    private class UserListAdapter extends ArrayAdapter<User> {
+        public UserListAdapter() { super(AdminMain.this, R.layout.listview_customer, users);
+        }
+
+        @Override
+        public View getView(int position, View view, ViewGroup parent) {
+            if(view == null)
+                view = getLayoutInflater().inflate(R.layout.listview_customer, parent, false);
+
+            User currentUser = users.get(position);
+            TextView name = (TextView) view.findViewById(R.id.customerlistCustomerName);
+            name.setText(currentUser.get_name());
+            return view;
+        }
+    }
+
 
     private void resetValues() {
         title.setText(null);

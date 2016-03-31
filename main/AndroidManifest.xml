@@ -29,6 +29,15 @@
             android:label="@string/title_activity_admin_main"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity android:name=".DetailedBook" >
+        </activity>
+        <activity android:name=".DetailedUser" >
+        </activity>
+        <activity
+            android:name=".UserTransactionHistory"
+            android:label="@string/title_activity_user_transaction_history"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>
