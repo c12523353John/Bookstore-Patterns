@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -211,6 +212,7 @@ public class AdminMain extends AppCompatActivity {
                 Intent intent2 = new Intent(AdminMain.this, DetailedUser.class);
                 User userInfo = users.get(longClickedItemIndex);
                 intent2.putExtra("User_ID", userInfo.get_userId());
+                Log.d("UserInfoId", Integer.toString(userInfo.get_userId()));
                 startActivity(intent2);
                 break;
 
