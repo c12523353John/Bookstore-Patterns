@@ -21,6 +21,7 @@ public class Book {
         _bookImage = bookImage;
     }
 
+
     public Uri get_bookImage() {
         return _bookImage;
     }

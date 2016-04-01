@@ -115,6 +115,7 @@ public class AdminMain extends AppCompatActivity {
                     Book book = new Book(dbHandler.getBooksCount(), String.valueOf(title.getText()), String.valueOf(author.getText()), String.valueOf(price.getText()),
                             String.valueOf(category.getText()), Integer.parseInt(String.valueOf(quantity.getText())), bookImageUri);
                     dbHandler.createBook(book);
+                    Log.d("Books Count", Integer.toString(dbHandler.getBooksCount()));
                     books.add(book);
                     bookAdapter.notifyDataSetChanged();
                     Toast.makeText(getApplicationContext(), title.getText().toString() + " added", Toast.LENGTH_SHORT).show();

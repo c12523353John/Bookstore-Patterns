@@ -35,8 +35,7 @@
         </activity>
         <activity
             android:name=".UserTransactionHistory"
-            android:label="@string/title_activity_user_transaction_history"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:label="@string/title_activity_user_transaction_history">
         </activity>
     </application>
 
