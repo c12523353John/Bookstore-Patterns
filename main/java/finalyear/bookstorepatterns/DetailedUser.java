@@ -31,7 +31,6 @@ public class DetailedUser extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_user);
         dbhandler = new DatabaseHandler(getApplicationContext());
         userID = getUserID();
-
         if(dbhandler.getUsersCount() !=0) {
             users.addAll(dbhandler.getAllUsers());
             paymentMethods.addAll(dbhandler.getAllPaymentMethods());
@@ -53,14 +52,17 @@ public class DetailedUser extends AppCompatActivity {
 
         for(int i =0; i<paymentMethods.size(); i++) {
             if (getUserID() == paymentMethods.get(i).get_userId()) {
+                Log.d("Get User ID", Integer.toString(getUserID()));
+                Log.d("PayMet User ID", Integer.toString(paymentMethods.get(i).get_userId()));
                 customerPaymentCardholderName = (TextView) findViewById(R.id.customerPaymentCardholderName);
-                customerPaymentCardholderName.setText(paymentMethods.get(i).get_cardHolderName());
+                customerPaymentCardholderName.setText("Cardholder Name: " + paymentMethods.get(i).get_cardHolderName());
                 customerPaymentCardNumber = (TextView) findViewById(R.id.customerPaymentCardNumber);
-                customerPaymentCardNumber.setText(paymentMethods.get(i).get_cardNumber());
+                customerPaymentCardNumber.setText("Card Number: " + paymentMethods.get(i).get_cardNumber());
                 customerPaymentCardExpiry = (TextView) findViewById(R.id.customerPaymentCardExpiry);
-                customerPaymentCardExpiry.setText(paymentMethods.get(i).get_cardExpiry());
+                customerPaymentCardExpiry.setText("Card Expiry: " + paymentMethods.get(i).get_cardExpiry());
                 customerPaymentCardCVV = (TextView) findViewById(R.id.customerPaymentCardholderCVV);
-                customerPaymentCardCVV.setText(paymentMethods.get(i).get_cardCVV());
+                customerPaymentCardCVV.setText("Card CVV: " + paymentMethods.get(i).get_cardCVV());
+                break;
             } else  {
                 customerPaymentCardholderName = (TextView) findViewById(R.id.customerPaymentCardholderName);
                 customerPaymentCardholderName.setText("Customer has not added payment method");
@@ -78,32 +80,32 @@ public class DetailedUser extends AppCompatActivity {
         for (int i = 0; i < users.size(); i++) {
             if(getUserID() == users.get(i).get_userId()) {
                 customerDetailsName = (TextView) findViewById(R.id.customerDetailsName);
-                customerDetailsName.setText(users.get(i).get_name());
+                customerDetailsName.setText("Name: " + users.get(i).get_name());
                 customerDetailsEmail = (TextView) findViewById(R.id.customerDetailsEmail);
-                customerDetailsEmail.setText(users.get(i).get_email());
+                customerDetailsEmail.setText("Email: " + users.get(i).get_email());
                 break;
             }
         }
     }
 
     private void setAddress() {
-        Address address = new Address(dbhandler.getAddressCount(), users.get(0).get_userId(), "test", "user 0", "","");
-        dbhandler.createAddress(address);
-        addresses.add(address);
-        Address address2 = new Address(dbhandler.getAddressCount(), users.get(1).get_userId(), "test", "user 1", "","");
-        dbhandler.createAddress(address2);
-        addresses.add(address2);
-
+//        Address address = new Address(dbhandler.getAddressCount(), users.get(0).get_userId(), "test", "user 0", "","");
+//        dbhandler.createAddress(address);
+//        addresses.add(address);
+//        Address address2 = new Address(dbhandler.getAddressCount(), users.get(1).get_userId(), "test", "user 1", "","");
+//        dbhandler.createAddress(address2);
+//        addresses.add(address2);
         for(int i=0; i<addresses.size(); i++) {
-            if (getUserID() == addresses.get(i).get_userId()) {
+            if (addresses.size() !=0 && getUserID() == addresses.get(i).get_userId()) {
                 customerAddressStreet1 = (TextView) findViewById(R.id.customerAddressStreet1);
-                customerAddressStreet1.setText(addresses.get(i).get_street1());
+                customerAddressStreet1.setText("Street 1: " + addresses.get(i).get_street1());
                 customerAddressStreet2 = (TextView) findViewById(R.id.customerAddressStreet2);
-                customerAddressStreet2.setText(addresses.get(i).get_street2());
+                customerAddressStreet2.setText("Street 2: " + addresses.get(i).get_street2());
                 customerAddressCity = (TextView) findViewById(R.id.customerAddressCity);
-                customerAddressCity.setText(addresses.get(i).get_city());
+                customerAddressCity.setText("City: " + addresses.get(i).get_city());
                 customerAddressCountry = (TextView) findViewById(R.id.customerAddressCountry);
-                customerAddressCountry.setText(addresses.get(i).get_country());
+                customerAddressCountry.setText("Country: " + addresses.get(i).get_country());
+                break;
             } else  {
                 customerAddressStreet1 = (TextView) findViewById(R.id.customerAddressStreet1);
                 customerAddressStreet1.setText("Customer has not added address");

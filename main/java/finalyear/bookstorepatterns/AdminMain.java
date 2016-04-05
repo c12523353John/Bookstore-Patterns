@@ -35,7 +35,7 @@ import finalyear.bookstorepatterns.Model.User;
 
 public class AdminMain extends AppCompatActivity {
 
-    private static final int EDIT=0, DELETE=1, BOOKINDETAIL=2, USERINFO=3, USERHISTORY=4;
+    private static final int EDIT=0, DELETE=1,  USERINFO=3, USERHISTORY=4, REMOVEUSER=5;
 
     EditText title, author, price, category, quantity;
     ImageView bookImageImgView;
@@ -106,7 +106,7 @@ public class AdminMain extends AppCompatActivity {
                     bookAdapter.notifyDataSetChanged();
                     TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
                     tabHost.setCurrentTab(1);
-                    addBtn.setText("Add Car");
+                    addBtn.setText("Add Book");
                     resetValues();
                     isEditMode = false;
 
@@ -146,10 +146,11 @@ public class AdminMain extends AppCompatActivity {
         bookImageImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Car Image"), 1);
+
 
             }
         });
@@ -163,10 +164,6 @@ public class AdminMain extends AppCompatActivity {
         populateList();
         populateCustomerList();
 
-
-
-
-
     }
 
 
@@ -178,7 +175,6 @@ public class AdminMain extends AppCompatActivity {
             menu.setHeaderTitle("Book Options");
             menu.add(Menu.NONE, EDIT, menu.NONE, "Edit Book Info");
             menu.add(Menu.NONE, DELETE, menu.NONE, "Delete Book");
-            menu.add(Menu.NONE, BOOKINDETAIL, menu.NONE, "View Book");
         }
 
         if(view == userListView) {
@@ -186,6 +182,7 @@ public class AdminMain extends AppCompatActivity {
             menu.setHeaderTitle("User Options");
             menu.add(Menu.NONE, USERINFO, menu.NONE, "View User Info");
             menu.add(Menu.NONE, USERHISTORY, menu.NONE, "View User Transaction History");
+            menu.add(Menu.NONE, REMOVEUSER, menu.NONE, "Delete User");
         }
 
     }
@@ -200,13 +197,6 @@ public class AdminMain extends AppCompatActivity {
                 dbHandler.deleteBook(books.get(longClickedItemIndex));
                 books.remove(longClickedItemIndex);
                 bookAdapter.notifyDataSetChanged();
-                break;
-
-            case BOOKINDETAIL:
-                Intent intent = new Intent(AdminMain.this, DetailedBook.class);
-                Book book = books.get(longClickedItemIndex);
-                intent.putExtra("BOOK_ID", book.get_bookId());
-                startActivity(intent);
                 break;
 
             case USERINFO:
@@ -224,7 +214,11 @@ public class AdminMain extends AppCompatActivity {
                 startActivity(intent3);
                 break;
 
-
+            case REMOVEUSER:
+                dbHandler.deleteUser(users.get(longClickedItemIndex));
+                users.remove(longClickedItemIndex);
+                userAdapter.notifyDataSetChanged();
+                break;
         }
 
         return false;

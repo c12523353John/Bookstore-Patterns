@@ -20,7 +20,7 @@ public class OpeningActivity extends AppCompatActivity {
 
 
         dbHandler = new DatabaseHandler(getApplicationContext());
-        Log.d("Books Count: ", Integer.toString(dbHandler.getBooksCount()));
+      //  Log.d("Books Count: ", Integer.toString(dbHandler.getBooksCount()));
 
 
         final Button registerBtn = (Button) findViewById(R.id.btnOpenerRegister);

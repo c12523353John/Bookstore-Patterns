@@ -22,6 +22,7 @@ public class Book {
     }
 
 
+
     public Uri get_bookImage() {
         return _bookImage;
     }

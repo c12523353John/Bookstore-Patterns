@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:text="Username"
+            android:id="@+id/reviewsListViewCustomerName"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"/>
+
+
+        <RatingBar
+            android:id="@+id/reviewsListViewCustomerRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleSmall"
+            android:numStars="5"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:stepSize="0.1"
+            android:isIndicator="true" />
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Comment"
+        android:textSize="15dp"
+        android:id="@+id/reviewsListViewCustomerComment"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="5dp"/>
+
+    </LinearLayout>

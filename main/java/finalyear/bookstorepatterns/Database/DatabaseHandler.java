@@ -27,9 +27,9 @@ import finalyear.bookstorepatterns.Model.User;
  */
 public class DatabaseHandler extends SQLiteOpenHelper{
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 5;
 
-    private static final String DATABASE_NAME = "bookstorePatterns",
+    private static final String DATABASE_NAME = "bookstorePatterns2",
 
     TABLE_USERS = "users",
     KEY_USER_ID = "userId",
@@ -49,8 +49,9 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     KEY_REVIEW_ID = "reviewId",
     KEY_REVIEW_BOOK_ID = "bookId",
     KEY_REVIEW_USER_ID = "userId",
-    KEY_REVIEW_COMMENT = "comment",
     KEY_REVIEW_RATING = "rating",
+    KEY_REVIEW_COMMENT = "comment",
+
 
     TABLE_PAYMENT_METHOD = "paymentMethods",
     KEY_PAYMENT_METHOD_ID = "paymentMethodId",
@@ -83,9 +84,9 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_USERS + "(" + KEY_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_USER_NAME + " TEXT," + KEY_USER_EMAIL + " TEXT," + KEY_USER_PASSWORD + " TEXT" + ")");
         db.execSQL("CREATE TABLE " + TABLE_ADDRESS + "(" + KEY_ADDRESS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_ADDRESS_USER_ID + " TEXT," + KEY_ADDRESS_STREET1 + " TEXT," + KEY_ADDRESS_STREET2 + " TEXT," + KEY_ADDRESS_CITY + " TEXT," + KEY_ADDRESS_COUNTRY + " TEXT" + ")");
-        db.execSQL("CREATE TABLE " + TABLE_REVIEW + "(" + KEY_REVIEW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_REVIEW_BOOK_ID + " TEXT," + KEY_REVIEW_USER_ID + " TEXT," + KEY_REVIEW_COMMENT + " TEXT," + KEY_REVIEW_RATING + " TEXT" + ")");
+        db.execSQL("CREATE TABLE " + TABLE_REVIEW + "(" + KEY_REVIEW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_REVIEW_BOOK_ID + " TEXT," + KEY_REVIEW_USER_ID + " TEXT," + KEY_REVIEW_RATING + " TEXT," +  KEY_REVIEW_COMMENT + " TEXT" + ")");
         db.execSQL("CREATE TABLE " + TABLE_PAYMENT_METHOD + "(" + KEY_PAYMENT_METHOD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_PAYMENT_METHOD_USER_ID + " TEXT," + KEY_PAYMENT_METHOD_CARD_HOLDER_NAME + " TEXT," + KEY_PAYMENT_METHOD_CARD_NUMBER + " TEXT," + KEY_PAYMENT_METHOD_CARD_EXPIRY + " TEXT," + KEY_PAYMENT_METHOD_CARD_CVV + " TEXT" + ")");
-        db.execSQL("CREATE TABLE " + TABLE_PURCHASE_HISTORY + "(" + KEY_PURCHASE_HISTORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_PURCHASE_HISTORY_USER_ID + " TEXT," + KEY_PURCHASE_HISTORY_BOOK_ID + KEY_PURCHASE_HISTORY_DATE + " TEXT" + ")");
+        db.execSQL("CREATE TABLE " + TABLE_PURCHASE_HISTORY + "(" + KEY_PURCHASE_HISTORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_PURCHASE_HISTORY_USER_ID + " TEXT," + KEY_PURCHASE_HISTORY_BOOK_ID + " TEXT," + KEY_PURCHASE_HISTORY_DATE + " TEXT" + ")");
         db.execSQL("CREATE TABLE " + TABLE_BOOKS + "(" + KEY_BOOK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_BOOK_TITLE + " TEXT," + KEY_BOOK_AUTHOR + " TEXT," + KEY_BOOK_PRICE + " TEXT," + KEY_BOOK_CATEGORY + " TEXT," + KEY_BOOK_QUANTITY + " TEXT," + KEY_BOOK_IMAGE + " TEXT" + ")");
 
     }
@@ -98,6 +99,14 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PAYMENT_METHOD);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PURCHASE_HISTORY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS);
+        db.execSQL("CREATE TABLE " + TABLE_USERS + "(" + KEY_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_USER_NAME + " TEXT," + KEY_USER_EMAIL + " TEXT," + KEY_USER_PASSWORD + " TEXT" + ")");
+        db.execSQL("CREATE TABLE " + TABLE_ADDRESS + "(" + KEY_ADDRESS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_ADDRESS_USER_ID + " TEXT," + KEY_ADDRESS_STREET1 + " TEXT," + KEY_ADDRESS_STREET2 + " TEXT," + KEY_ADDRESS_CITY + " TEXT," + KEY_ADDRESS_COUNTRY + " TEXT" + ")");
+        db.execSQL("CREATE TABLE " + TABLE_REVIEW + "(" + KEY_REVIEW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_REVIEW_BOOK_ID + " TEXT," + KEY_REVIEW_USER_ID + " TEXT," + KEY_REVIEW_RATING + " TEXT," +  KEY_REVIEW_COMMENT + " TEXT" + ")");
+        db.execSQL("CREATE TABLE " + TABLE_PAYMENT_METHOD + "(" + KEY_PAYMENT_METHOD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_PAYMENT_METHOD_USER_ID + " TEXT," + KEY_PAYMENT_METHOD_CARD_HOLDER_NAME + " TEXT," + KEY_PAYMENT_METHOD_CARD_NUMBER + " TEXT," + KEY_PAYMENT_METHOD_CARD_EXPIRY + " TEXT," + KEY_PAYMENT_METHOD_CARD_CVV + " TEXT" + ")");
+        db.execSQL("CREATE TABLE " + TABLE_PURCHASE_HISTORY + "(" + KEY_PURCHASE_HISTORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_PURCHASE_HISTORY_USER_ID + " TEXT," + KEY_PURCHASE_HISTORY_BOOK_ID + " TEXT," + KEY_PURCHASE_HISTORY_DATE + " TEXT" + ")");
+        db.execSQL("CREATE TABLE " + TABLE_BOOKS + "(" + KEY_BOOK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_BOOK_TITLE + " TEXT," + KEY_BOOK_AUTHOR + " TEXT," + KEY_BOOK_PRICE + " TEXT," + KEY_BOOK_CATEGORY + " TEXT," + KEY_BOOK_QUANTITY + " TEXT," + KEY_BOOK_IMAGE + " TEXT" + ")");
+
+
 
     }
 
@@ -133,8 +142,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(KEY_REVIEW_BOOK_ID, review.get_bookId());
         values.put(KEY_REVIEW_USER_ID, review.get_userId());
-        values.put(KEY_REVIEW_COMMENT, review.get_comment());
         values.put(KEY_REVIEW_RATING, review.get_rating());
+        values.put(KEY_REVIEW_COMMENT, review.get_comment());
         db.insert(TABLE_REVIEW, null, values);
         db.close();
     }
@@ -156,7 +165,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(KEY_PURCHASE_HISTORY_USER_ID, purchaseHistory.get_userId());
         values.put(KEY_PURCHASE_HISTORY_BOOK_ID, purchaseHistory.get_bookId());
-        values.put(KEY_PURCHASE_HISTORY_DATE, String.valueOf(purchaseHistory.get_date()));
+        values.put(KEY_PURCHASE_HISTORY_DATE, "'" + String.valueOf(purchaseHistory.get_date()) + "'");
         db.insert(TABLE_PURCHASE_HISTORY, null, values);
         db.close();
     }
@@ -256,8 +265,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(KEY_REVIEW_BOOK_ID, review.get_bookId());
         values.put(KEY_REVIEW_USER_ID, review.get_userId());
-        values.put(KEY_REVIEW_COMMENT, review.get_comment());
         values.put(KEY_REVIEW_RATING, review.get_rating());
+        values.put(KEY_REVIEW_COMMENT, review.get_comment());
         int rowsAffected = db.update(TABLE_REVIEW, values, KEY_REVIEW_ID + "=?", new String[]{String.valueOf(review.get_reviewId())});
         db.close();
         return rowsAffected;
@@ -332,7 +341,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
     public Review getReview(int id) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(TABLE_REVIEW, new String[] {KEY_REVIEW_ID,KEY_REVIEW_BOOK_ID, KEY_REVIEW_USER_ID, KEY_REVIEW_COMMENT, KEY_REVIEW_RATING},
+        Cursor cursor = db.query(TABLE_REVIEW, new String[] {KEY_REVIEW_ID,KEY_REVIEW_BOOK_ID, KEY_REVIEW_USER_ID, KEY_REVIEW_RATING, KEY_REVIEW_COMMENT},
                 KEY_REVIEW_ID + "=?", new String[]{String.valueOf(id)},null,null,null,null);
         if(cursor !=null)
             cursor.moveToFirst();
@@ -495,7 +504,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return paymentMethods;
     }
 
-    public List<PurchaseHistory> getAllPurchasHistory() {
+    public List<PurchaseHistory> getAllPurchaseHistory() {
         List<PurchaseHistory> purchaseHistories = new ArrayList<>();
         Date date = new Date();
         SQLiteDatabase db = getWritableDatabase();
@@ -525,5 +534,10 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             } while (cursor.moveToNext()) ;
         }
         return books;
+    }
+
+    public void deleteTableContents(String tableName) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from "+ tableName);
     }
 }

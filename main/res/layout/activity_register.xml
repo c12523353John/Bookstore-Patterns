@@ -1,58 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.college.carsalesapp.Register">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <!-- Here you put the rest of your current view-->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="com.example.college.carsalesapp.Register">
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_weight="1"
-        android:id="@+id/textRegisterName"
-        android:hint="Name"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="User Details"
+            android:id="@+id/registerCustomerDetailsTitle"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp" />
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/textRegisterEmail"
-        android:hint="Email"
-        android:layout_below="@+id/textRegisterName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/lineGrey"
+            android:layout_below="@+id/registerCustomerDetailsTitle"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="10dp"/>
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/textRegisterPassword"
-        android:hint="Password"
-        android:layout_below="@+id/textRegisterEmail"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:layout_weight="1"
+            android:id="@+id/textRegisterName"
+            android:hint="Name"
+            android:layout_below="@+id/lineGrey"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:id="@+id/btnRegisterUser"
-        android:layout_below="@+id/textRegisterPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
-        android:textColor="#ffffff"
-        android:width="200dp"
-        android:background="#73ad58" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/textRegisterEmail"
+            android:hint="Email"
+            android:layout_below="@+id/textRegisterName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
 
-</RelativeLayout>
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/textRegisterPassword"
+            android:hint="Password"
+            android:layout_below="@+id/textRegisterEmail"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="20dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Address Details"
+            android:id="@+id/registerCustomerAddressTitle"
+            android:layout_below="@+id/textRegisterPassword"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/lineGrey2"
+            android:layout_below="@+id/registerCustomerAddressTitle"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:ems="10"
+            android:id="@+id/textRegisterStreet1"
+            android:hint="Address Street 1"
+            android:layout_below="@+id/lineGrey2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:ems="10"
+            android:id="@+id/textRegisterStreet2"
+            android:hint="Address Street 1"
+            android:layout_below="@+id/textRegisterStreet1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:ems="10"
+            android:id="@+id/textRegisterCity"
+            android:hint="City"
+            android:layout_below="@+id/textRegisterStreet2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:ems="10"
+            android:id="@+id/textRegisterCountry"
+            android:hint="Country"
+            android:layout_below="@+id/textRegisterCity"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Card Details"
+            android:id="@+id/registerCustomerCardTitle"
+            android:layout_below="@+id/textRegisterCountry"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/lineGrey3"
+            android:layout_below="@+id/registerCustomerCardTitle"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/textRegisterCardHolderName"
+            android:hint="Card Holder Name"
+            android:layout_below="@+id/lineGrey3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/textRegisterCardNumber"
+            android:hint="Card Number"
+            android:layout_below="@+id/textRegisterCardHolderName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/textRegisterCardExpiry"
+            android:hint="Card Expiry"
+            android:layout_below="@+id/textRegisterCardNumber"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/textRegisterCardCVV"
+            android:hint="Card CVV"
+            android:layout_below="@+id/textRegisterCardExpiry"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:maxLength="3" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:id="@+id/btnRegisterUser"
+            android:layout_below="@+id/textRegisterCardCVV"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="68dp"
+            android:textColor="#ffffff"
+            android:width="200dp"
+            android:background="#73ad58" />
+
+    </RelativeLayout>
+</ScrollView>
+

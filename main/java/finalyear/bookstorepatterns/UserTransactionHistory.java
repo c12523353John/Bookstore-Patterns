@@ -27,12 +27,9 @@ public class UserTransactionHistory extends AppCompatActivity {
     List<PurchaseHistory> transactionHistories= new ArrayList<>();
     List<Book> books = new ArrayList<>();
     DatabaseHandler dbHandler;
-    int userID=-1;
     ListView tHListView;
     ArrayAdapter<PurchaseHistory> tHArrayAdapter;
     List<PurchaseHistory> userHistory = new ArrayList<>();
-    String bookName;
-    String bookPrice;
     Book currentBook = new Book(0, null, null,null, null, 0,null );
 
     @Override
@@ -42,14 +39,12 @@ public class UserTransactionHistory extends AppCompatActivity {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         dbHandler = new DatabaseHandler(getApplicationContext());
-        transactionHistories.addAll(dbHandler.getAllPurchasHistory());
+        Log.d("Size of table", Integer.toString(dbHandler.getPurchaseHistoryCount()));
+        transactionHistories.addAll(dbHandler.getAllPurchaseHistory());
+        Log.d("TransactionSize", Integer.toString(transactionHistories.size()));
         books.addAll(dbHandler.getAllBooks());
         tHListView = (ListView) findViewById(R.id.transactionListView);
         Date date = new Date();
-        PurchaseHistory ph = new PurchaseHistory(dbHandler.getPurchaseHistoryCount(), 1,6, date);
-        PurchaseHistory ph2 = new PurchaseHistory(dbHandler.getPurchaseHistoryCount(), 1,6, date);
-        userHistory.add(ph);
-        userHistory.add(ph2);
         getUserHistory();
         populateTransactionsList();
     }
@@ -63,6 +58,8 @@ public class UserTransactionHistory extends AppCompatActivity {
                 PurchaseHistory ph = new PurchaseHistory(dbHandler.getPurchaseHistoryCount(), userId, bookId, date);
                 userHistory.add(ph);
                 }
+
+            Log.d("User History Size" , Integer.toString(userHistory.size()));
 
         }
     }
